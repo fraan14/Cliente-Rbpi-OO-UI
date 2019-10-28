@@ -19,8 +19,8 @@ class Controlc2c:
     def runControlc2c(self):
         self.startServer()
         while True:
-            self.verifyClientQueue()
-            self.processIncomingMessages()
+            #self.verifyClientQueue()
+            #self.processIncomingMessages()
             self.processToSendMessages()
 
     def processIncomingMessages(self):
@@ -43,7 +43,6 @@ class Controlc2c:
                 print("ojo con esta")
         # while (len(toRem)>0):
         #     self.intDict.pop(toRem.pop())
-    
     def processToSendMessages(self):
         while (not self.colaC2C[0].empty()):
             try:
@@ -54,10 +53,10 @@ class Controlc2c:
                     self.intDict[ip].sendall(toSend) #aca tengo que verificar que exista la entrada en el diccionario sino tendria que crear un socket y crear la entrada.
                 else:
                     s = self.crearEntradaConSocket(ip)
-                    self.intDict[ip].sendall(toSend)
-                    # if (s != None):
-                    #     s.sendall(toSend)
-                    #     s.close()
+                    #self.intDict[ip].sendall(toSend)
+                    if (s != None):
+                        s.sendall(toSend)
+                        s.close()
             except:
                 exc_info = sys.exc_info()
                 traceback.print_exception(*exc_info)
@@ -70,7 +69,7 @@ class Controlc2c:
         except:
             print("error al querer conectar con el servidor del cliente destino")
             return None
-        self.intDict.update({ip:s})
+        #self.intDict.update({ip:s})
         return s
 
     def verifyClientQueue(self):
@@ -100,8 +99,27 @@ class Controlc2c:
         self.ClienteControlServer.listen()
         while(True):
             c, addr = self.ClienteControlServer.accept()
-            c.settimeout(1)
-            comqueue.put({str(addr[0]):c}) #agrego un par ip:cliente en la cola.
+            nt = Thread(target=self.clientWork,args=(c,))    #Client connection thread.
+            nt.start()
+            #c.settimeout(1)
+            #comqueue.put({str(addr[0]):c}) #agrego un par ip:cliente en la cola.
+
+    def clientWork(self,s):
+        try:
+            data = s.recv(4096)
+            if (data):
+                data = json.loads(data.decode())
+                toRet = {"COMANDO":data["COMANDO"],"FROM":key,"CONTENIDO":data}
+                print("INCOMING MESSAGE from "+key)
+                print(toRet)
+                self.colaC2C[1].put(toRet)
+        except socket.timeout:
+            pass
+        except:
+            #toRem.append(key)
+            exc_info = sys.exc_info()
+            traceback.print_exception(*exc_info)
+            print("ojo con esta")
 
 
 if __name__ =="__main__":

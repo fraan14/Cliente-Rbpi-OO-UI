@@ -130,7 +130,7 @@ class SicosClientCore:
             pass
         if (msg["CONTENIDO"]["COMANDO"] == "FIN-COM"):
             self.EliminarIpVS(data["FROM"])
-            self.controlC2C.removeConnectionFinCom(data["FROM"])
+            #self.controlC2C.removeConnectionFinCom(data["FROM"])
         self.ModuloRecepcion(msg)
         
     def procesadorEnvioc2c(self,data):
