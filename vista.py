@@ -160,7 +160,7 @@ class VistaPrincipal(QtWidgets.QMainWindow):
             event.accept()
 
     #*******************************************************************************
-    #SEÑALES emitidas por la ventana de LOGIN
+    #SEÑALES emitidas por la ventana de LOGIN 
     #*******************************************************************************
     def Evento_Salir_Login(self):
         #self.obj_vista_login.MainWindow.hide()
