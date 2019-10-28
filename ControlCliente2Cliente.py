@@ -65,6 +65,7 @@ class Controlc2c:
 
     def crearEntradaConSocket(self,ip):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
         try:
             s.connect((ip, 15000))
         except:
@@ -101,6 +102,7 @@ class Controlc2c:
         while(True):
             c, addr = self.ClienteControlServer.accept()
             c.settimeout(1)
+            c.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
             comqueue.put({str(addr[0]):c}) #agrego un par ip:cliente en la cola.
 
 
