@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="imagenes">
+    <file>llamada1.gif</file>
+    <file>comun.png</file>
+    <file>entrante rojo.png</file>
+    <file>entrante verde.png</file>
+    <file>saliente rojo.png</file>
+    <file>saliente verde.png</file>
+  </qresource>
+</RCC>
