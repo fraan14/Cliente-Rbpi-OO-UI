@@ -14,6 +14,8 @@ class Controlc2c:
         self.ClienteControlServer.bind(("",15000))
         self.colaC2C = colaC2C
 
+        self.toRem = []
+
 
     #Module Work
     def runControlc2c(self):
@@ -24,25 +26,25 @@ class Controlc2c:
             self.processToSendMessages()
 
     def processIncomingMessages(self):
-        toRem = []
         for key,value in self.intDict.items():
-            try:
-                data = value.recv(4096)
-                if (data):
-                    data = json.loads(data.decode())
-                    toRet = {"COMANDO":data["COMANDO"],"FROM":key,"CONTENIDO":data}
-                    print("INCOMING MESSAGE from "+key)
-                    print(toRet)
-                    self.colaC2C[1].put(toRet)
-            except socket.timeout:
-                pass
-            except:
-                toRem.append(key)
-                exc_info = sys.exc_info()
-                traceback.print_exception(*exc_info)
-                print("ojo con esta")
-        while (len(toRem)>0):
-            self.intDict.pop(toRem.pop())
+            if(not key in self.toRem):
+                try:
+                    data = value.recv(4096)
+                    if (data):
+                        data = json.loads(data.decode())
+                        toRet = {"COMANDO":data["COMANDO"],"FROM":key,"CONTENIDO":data}
+                        print("INCOMING MESSAGE from "+key)
+                        print(toRet)
+                        self.colaC2C[1].put(toRet)
+                except socket.timeout:
+                    pass
+                except:
+                    self.toRem.append(key)
+                    exc_info = sys.exc_info()
+                    traceback.print_exception(*exc_info)
+                    print("ojo con esta")
+        while (len(self.toRem)>0):
+            self.intDict.pop(self.toRem.pop())
     
     def processToSendMessages(self):
         while (not self.colaC2C[0].empty()):
@@ -83,10 +85,11 @@ class Controlc2c:
                 print("timeout")
 
     def removeConnectionFinCom(self,ip):
+        self.toRem.append(ip)
         # self.preRemoveThread = Thread(target=self.finalRemoveConection,args=(ip,))    #Client connection thread.
         # self.preRemoveThread.start()
-        s = self.intDict.pop(ip)
-        s.close()
+        #s = self.intDict.pop(ip)
+        #s.close()
 
     def finalRemoveConection(self,ip):
         time.sleep(1)
