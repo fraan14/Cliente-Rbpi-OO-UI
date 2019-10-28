@@ -5,7 +5,7 @@ def generarEnvioMensaje(comando, ipDestino, contenido):
             "CONTENIDO":contenido}
     return toRet
 
-def generarMensajeLogin(nombre,password,destino="FRANCO",hassh="224-2"):
+def generarMensajeLogin(nombre,password,destino="SIAG",hassh="224-2"):
     toRet={"COMANDO":"LOGIN",
             "NOMBRE":nombre,
             "PASSWORD":password,

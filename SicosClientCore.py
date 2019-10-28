@@ -85,8 +85,7 @@ class SicosClientCore:
         elif(dato["COMANDO"] == "FIN-COM"):                 #TODO Eliminar ip de lista de ips voip
             self.EliminarIpVS(dato["TO"])
             self.procesadorEnvioc2c(dato)
-            #self.controlC2C.removeConnectionFinCom(dato["TO"])
-
+            self.controlC2C.removeConnectionFinCom(dato["TO"])
     
     #la info tiene que venir en un diccionario.
     def checkModuloEnvio(self):
@@ -130,7 +129,7 @@ class SicosClientCore:
             pass
         if (msg["CONTENIDO"]["COMANDO"] == "FIN-COM"):
             self.EliminarIpVS(data["FROM"])
-            #self.controlC2C.removeConnectionFinCom(data["FROM"])
+            self.controlC2C.removeConnectionFinCom(data["TO"])
         self.ModuloRecepcion(msg)
         
     def procesadorEnvioc2c(self,data):
