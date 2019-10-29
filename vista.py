@@ -6,6 +6,7 @@ import vista_frame_usuario
 import vista_login
 import SicosClientCoreWrapper
 import FormateadorAJson
+import time
 
 class VistaPrincipal(QtWidgets.QMainWindow):
     
