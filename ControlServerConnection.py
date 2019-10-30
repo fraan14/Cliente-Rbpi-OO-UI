@@ -31,7 +31,7 @@ class ControlServerConnection:
     def AlertaRecepcionMensaje(self):
         try:
             response = self.serverSoc.recv(4096)
-            response = json.loads(response)
+            response = json.loads(response.decode('utf-8'))
             self.colasServerControl[1].put(response)
         except socket.timeout:
             pass
@@ -91,7 +91,7 @@ class ControlServerConnection:
             data = json.dumps(data)
             self.serverSoc.sendall(data.encode())
             response = self.serverSoc.recv(4096)
-            response = json.loads(response)
+            response = json.loads(response.decode('utf-8'))
             self.colasServerControl[1].put(response)
             return response["RESPUESTA"]
         except:

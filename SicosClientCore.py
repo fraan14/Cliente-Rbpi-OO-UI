@@ -85,7 +85,7 @@ class SicosClientCore:
         elif(dato["COMANDO"] == "FIN-COM"):                 #TODO Eliminar ip de lista de ips voip
             self.EliminarIpVS(dato["TO"])
             self.procesadorEnvioc2c(dato)
-            #self.controlC2C.removeConnectionFinCom(dato["TO"])
+            #self.controlC2C.removeConnectionFinCom(dato["TO"]) NO ELIMINAR, elimina una vez que envio sino cierra el socket
     
     #la info tiene que venir en un diccionario.
     def checkModuloEnvio(self):
@@ -94,7 +94,9 @@ class SicosClientCore:
                 data = self.envioExterno.get(timeout=1)
                 self.ModuloEnvio(data)
             except:
-                pass    #TODO: hacer excepcion si el json no viene serializado en string
+                exc_info = sys.exc_info()
+                traceback.print_exception(*exc_info)
+                print("[SCC]errores checkModuloEnvio")    #TODO: hacer excepcion si el json no viene serializado en string
 
 
     #----------------------------Metodos Control Voice Streaming ------------------------
@@ -105,7 +107,10 @@ class SicosClientCore:
 
     def EliminarIpVS(self,ip):
         #self.toStreamIps.remove(ip)
-        self.voicestreaming.removeIpToStream(ip)
+        try:
+            self.voicestreaming.removeIpToStream(ip)
+        except:
+            print("[SCC]ip: "+ip+" no esta en la lista para eliminar")
 
     #----------------------------Metodos Control Cliente 2 Cliente ----------------------
 
@@ -126,7 +131,7 @@ class SicosClientCore:
         if (msg["CONTENIDO"]["COMANDO"] == "SOLICITUD-COM-ACEPTADA"):
             self.AgregarIpVS(data["FROM"])
         if (msg["CONTENIDO"]["COMANDO"] == "SOLICITUD-COM-RECHAZADA"):
-            pass
+            self.controlC2C.removeConnectionFinCom(data["FROM"])
         if (msg["CONTENIDO"]["COMANDO"] == "FIN-COM"):
             self.EliminarIpVS(data["FROM"])
             self.controlC2C.removeConnectionFinCom(data["FROM"])

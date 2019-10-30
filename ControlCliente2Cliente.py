@@ -39,7 +39,8 @@ class Controlc2c:
                 except socket.timeout:
                     pass
                 except:
-                    self.toRem.append(key)
+                    if(not key in self.toRem):
+                        self.toRem.append(key)
                     exc_info = sys.exc_info()
                     traceback.print_exception(*exc_info)
                     print("ojo con esta")
@@ -57,32 +58,33 @@ class Controlc2c:
                 else:
                     s = self.crearEntradaConSocket(ip)
                     self.intDict[ip].sendall(toSend)
-                    # if (s != None):
-                    #     s.sendall(toSend)
-                    #     s.close()
+                if(msg["COMANDO"] == 'FIN-COM'):
+                    self.finalRemoveConection(msg["TO"])
+                
             except:
                 exc_info = sys.exc_info()
                 traceback.print_exception(*exc_info)
-                print("errores muchacho")
+                print("[C2C]errores process To Send Messages")
 
     def crearEntradaConSocket(self,ip):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
         try:
             s.connect((ip, 15000))
+            s.settimeout(1)
+            self.intDict.update({ip:s})
         except:
             print("error al querer conectar con el servidor del cliente destino")
             return None
-        self.intDict.update({ip:s})
         return s
 
     def verifyClientQueue(self):
-        while(not self.clientQueue.empty()):
+        while(self.clientQueue.empty()== False):
             try:
                 entry = self.clientQueue.get(timeout=0.5)
                 self.intDict.update(entry)
             except:
-                print("timeout")
+                print("[C2C]timeout")
 
     def removeConnectionFinCom(self,ip):
         self.toRem.append(ip)
