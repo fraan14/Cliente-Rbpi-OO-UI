@@ -22,6 +22,7 @@ class SicosClientCoreWrapper(QtCore.QObject):
 
     #disconected
     desconexion =QtCore.pyqtSignal()
+    Running = True
 
 
     def __init__(self):
@@ -44,11 +45,14 @@ class SicosClientCoreWrapper(QtCore.QObject):
         #este mensaje debe estar formateado con el json {COMANDO:xxx , TO:xxxx, CONTENIDO:xxx }
 
     def checkIncomingMessageQueue(self):
-        while True:
+        while self.Running:
             data = self.colaRecepcion.get()
             print("Cola Recepcion: ", data)
             if(data["COMANDO"] == "LOGUEO-EXITOSO"):
-                self.logueo_exitoso.emit(data["CONTENIDO"]["CONTENIDO"]["USUARIOS"])
+                if(data["CONTENIDO"]["CONTENIDO"]["USUARIOS"]==''):
+                    self.logueo_exitoso.emit([])
+                else:
+                    self.logueo_exitoso.emit(data["CONTENIDO"]["CONTENIDO"]["USUARIOS"])
                 self.my_token.emit(data["CONTENIDO"]["CONTENIDO"]["TOKEN"])
             if(data["COMANDO"] == "LOGIN-NUEVO-USUARIO"):
                 self.login_nuevo_usuario.emit(data["CONTENIDO"]["CONTENIDO"]["USUARIOS"][0])
@@ -69,6 +73,8 @@ class SicosClientCoreWrapper(QtCore.QObject):
             if(data["COMANDO"] == "FIN-COM"):
                 self.fin_com.emit(data["FROM"])
 
+    def finishExecution(self):
+        self.Running = False
 
 if __name__ == "__main__":
     rbpiSC = SicosClientCoreWrapper()

@@ -99,7 +99,8 @@ class Controlc2c:
 
     #SERVER C2C
     def startServer(self):
-        self.ccThread = Thread(target=self.serverWork,args=(self.clientQueue,))    #Client connection thread.
+        self.ccThread = Thread(name="T-C2C-Server",target=self.serverWork,args=(self.clientQueue,))    #Client connection thread.
+        self.ccThread.setDaemon(True)
         self.ccThread.start()
 
     def serverWork(self,comqueue):

@@ -42,17 +42,20 @@ class SicosClientCore:
 
 
     def preInitComunication(self):
-        self.initThread = Thread(target=self.initComunication)
+        self.initThread = Thread(name="SicosClientCore",target=self.initComunication)
+        self.initThread.setDaemon(True)
         self.initThread.start()
 
     def initComunication(self):
         while True:
             #self.checkModuloEnvio()
             if(self.cscThread == None):
-                self.cscThread = Thread(target=self.controlsc.runControlServerConnection)
+                self.cscThread = Thread(name="T-ControlServerConnection",target=self.controlsc.runControlServerConnection)
+                self.cscThread.setDaemon(True)
                 self.cscThread.start()
             if(self.c2cThread == None):
-                self.c2cThread = Thread(target=self.controlC2C.runControlc2c)
+                self.c2cThread = Thread(name="T-Client2Client",target=self.controlC2C.runControlc2c)
+                self.c2cThread.setDaemon(True)
                 self.c2cThread.start()
             
             

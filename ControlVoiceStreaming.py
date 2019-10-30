@@ -31,7 +31,7 @@ class ControlVoiceStreaming:
                          frames_per_buffer=self.CHUNK)
 
         #self.udpCallback.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # Para habilitar el Broadcast
-        TServer = Thread(target=self.VoiceStream)
+        TServer = Thread(name="T-VoiceStream",target=self.VoiceStream)
         TServer.start()
 
     def FuncionCall(self, in_data, frame_count, time_info, status):
