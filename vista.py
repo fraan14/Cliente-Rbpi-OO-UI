@@ -168,7 +168,7 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         self.obj_vista_login.Set_Mensaje_Informacion("Error de coneccion al Servidor !!!")
 
 
-    #SIGNAL enviadas por el Wrapper provenientes del Cliente - COMUNICACION entre CLIENTES
+    #SIGNAL enviadas por el Wrapper provenientes del Cliente - COMUNICACION entre CLIENTEs
     def Evento_Solicitud_Com(self,usuario_ip):
         print("SOLICITUD COM")
         frame_usuario = self.Mover_Frame_Usuario_Top(usuario_ip)
