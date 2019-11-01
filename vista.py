@@ -52,13 +52,13 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         if (not self.cerrado_desde_ventana_login):
             resultado = QtWidgets.QMessageBox.question(self, 'Salir...',"¿Seguro que quieres salir de la aplicación?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if resultado == QtWidgets.QMessageBox.Yes:
-                self.obj_wrapper_sicos_client_core.finishexecution()
+                self.obj_wrapper_sicos_client_core.finishExecution()
                 event.accept()
             else:
                 event.ignore()
         else:         
             event.accept()
-            self.obj_wrapper_sicos_client_core.finishexecution()
+            self.obj_wrapper_sicos_client_core.finishExecution()
 
     #*******************************************************************************
     #SEÑALES emitidas por la ventana de LOGIN 
@@ -256,8 +256,11 @@ class VistaPrincipal(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    obj_vista_principal = VistaPrincipal()
-    obj_vista_principal.show()
+    try:
+        obj_vista_principal = VistaPrincipal()
+        obj_vista_principal.show()
+    except:
+        pass
     sys.exit(app.exec_())
 
 

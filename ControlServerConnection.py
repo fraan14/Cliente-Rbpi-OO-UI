@@ -43,13 +43,23 @@ class ControlServerConnection:
             pass
 
     def AlertaEnvioMensaje(self):
-        try:
-            res = self.colasServerControl[0].get(timeout=1)
-            self.serverSoc.sendall(json.dumps(res).encode())
-        except socket.error:
-            return self.finalizacionSocket()
-        except:
-            pass
+        # try:
+        #     res = self.colasServerControl[0].get(timeout=1)
+        #     self.serverSoc.sendall(json.dumps(res).encode())
+        # except socket.error:
+        #     return self.finalizacionSocket()
+        # except:
+        #     pass
+        
+        if(self.colasServerControl[0].empty() == False):
+            try:
+                res = self.colasServerControl[0].get(timeout=1)
+                self.serverSoc.sendall(json.dumps(res).encode())
+            except socket.error:
+                return self.finalizacionSocket()
+            except:
+                pass
+
 
     def checkResponse(self):
         response = self.serverSoc.recv(4096)

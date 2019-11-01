@@ -150,15 +150,16 @@ class SicosClientCore:
 
     #----------------------------Metodos Control Server Connection ----------------------
     def checkControlConServer(self):
-        try:
-            res = self.aControlConserver[1].get(timeout=1)      #veo si hay algo en la cola de recepcion de mensajes.
-            self.procesadorRecepcionCsc(res)
-        except socket.error:
-            self.cscThread._stop()
-            self.cscThread = None
-            time.sleep(1)
-        except Exception :
-            pass
+        if(self.aControlConserver[1].empty() == False):
+            try:
+                res = self.aControlConserver[1].get(timeout=1)      #veo si hay algo en la cola de recepcion de mensajes.
+                self.procesadorRecepcionCsc(res)
+            except socket.error:
+                self.cscThread._stop()
+                self.cscThread = None
+                time.sleep(1)
+            except Exception :
+                pass
         # template = "An exception of type {0} occurred. Arguments:\n{1!r}"
         # message = template.format(type(ex).__name__, ex.args)
             #exc_info = sys.exc_info()
