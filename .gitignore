@@ -26,7 +26,7 @@ dist/vista.exe
 *.txt
 *.spec
 __pycache__/
-.pystest_cache
-.vscode
+.pystest_cache/
+.vscode/
 build/
 dist/
