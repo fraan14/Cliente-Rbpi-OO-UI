@@ -25,9 +25,11 @@ build/vista/xref-vista.html
 dist/vista.exe
 *.txt
 *.spec
+*pyc
 __pycache__/
 .pystest_cache/
 .vscode/
 build/
 dist/
+__pycache__/ControlVoiceStreaming.cpython-36.pyc
 __pycache__/ControlVoiceStreaming.cpython-36.pyc
