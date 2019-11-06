@@ -23,3 +23,10 @@ build/vista/PYZ-00.toc
 build/vista/warn-vista.txt
 build/vista/xref-vista.html
 dist/vista.exe
+*.txt
+*.spec
+__pycache__/
+.pystest_cache
+.vscode
+build/
+dist/
