@@ -29,11 +29,11 @@ class ControlVoiceStreaming:
                                   stream_callback=self.FuncionCall)
         self.streamInput.start_stream()
 
-        self.stout = self.pi.open(format=self.FORMAT,
-                         channels=self.CHANNELS,
-                         rate=self.RATE,
-                         output=True,
-                         frames_per_buffer=self.CHUNK)
+        #self.stout = self.pi.open(format=self.FORMAT,
+        #                 channels=self.CHANNELS,
+        #                 rate=self.RATE,
+        #                 output=True,
+        #                 frames_per_buffer=self.CHUNK)
 
         #self.udpCallback.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # Para habilitar el Broadcast
         TServer = Thread(name="T-VoiceStream",target=self.VoiceStream)
@@ -65,10 +65,10 @@ class ControlVoiceStreaming:
                         self.addToStoDict(addr)
                     sto = self.stoDict.get(addr)
                     sto.write(soundData, self.CHUNK)
-                    free = self.stout.get_write_available()  # Esto es por si viene audio vacio
+                    free = sto.get_write_available()  # Esto es por si viene audio vacio
                     if free > self.CHUNK:            # Is there a lot of space in the buffer?
                         tofill = free - self.CHUNK
-                        self.stout.write(silence * tofill)   # Fill it with silence
+                        sto.write(silence * tofill)   # Fill it with silence
             except Exception :
                traceback.print_exc()
 
