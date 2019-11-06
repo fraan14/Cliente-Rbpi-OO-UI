@@ -57,7 +57,7 @@ class ControlVoiceStreaming:
         while True:
             try:
                 udpData, addr = udp.recvfrom(self.CHUNK)
-                #print(addr)
+                print("Recibiendo datos de: ",addr)
                 if(self.IPAddr != addr):
                     soundData = audioop.alaw2lin(udpData, 2)   #audio a reproducir decodificado
                     self.stout.write(soundData, self.CHUNK)
