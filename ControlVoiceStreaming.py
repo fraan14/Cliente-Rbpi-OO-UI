@@ -9,6 +9,7 @@ class ControlVoiceStreaming:
 
     def __init__(self, ipHabilitadas):
         self.ipHabilitadas = ipHabilitadas
+        self.stoDict = dict()
         self.udpCallback = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # lo envio por broadcast
         hostname = socket.gethostname() 
         print(hostname)
@@ -60,7 +61,10 @@ class ControlVoiceStreaming:
                 print("Recibiendo datos de: ",addr)
                 if(self.IPAddr != addr):
                     soundData = audioop.alaw2lin(udpData, 2)   #audio a reproducir decodificado
-                    self.stout.write(soundData, self.CHUNK)
+                    # if(self.stoDict.get(addr)== None):
+                    #     self.addToStoDict(addr)
+                    sto = self.stoDict.get(addr)
+                    sto.write(soundData, self.CHUNK)
                     free = self.stout.get_write_available()  # Esto es por si viene audio vacio
                     if free > self.CHUNK:            # Is there a lot of space in the buffer?
                         tofill = free - self.CHUNK
@@ -70,9 +74,24 @@ class ControlVoiceStreaming:
 
     def addIpToStream(self,ip):
         self.ipHabilitadas.append(ip)
+        self.addToStoDict(ip)
 
     def removeIpToStream(self,ip):
         self.ipHabilitadas.remove(ip)
+        if(self.stoDict.get(ip)!= None):
+            self.stoDict.pop(ip)
+
+    def createSTO(self):
+        stout = self.pi.open(format=self.FORMAT,
+                         channels=self.CHANNELS,
+                         rate=self.RATE,
+                         output=True,
+                         frames_per_buffer=self.CHUNK)
+        return stout
+
+    def addToStoDict(self,ip):
+        sto = self.createSTO()
+        self.stoDict.update({ip,sto})
 
 if __name__ =="__main__":
     app = ControlVoiceStreaming(["172.0.0.3"])
