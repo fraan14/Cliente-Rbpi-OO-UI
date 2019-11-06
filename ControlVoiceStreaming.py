@@ -61,8 +61,8 @@ class ControlVoiceStreaming:
                 print("Recibiendo datos de: ",addr)
                 if(self.IPAddr != addr):
                     soundData = audioop.alaw2lin(udpData, 2)   #audio a reproducir decodificado
-                    # if(self.stoDict.get(addr)== None):
-                    #     self.addToStoDict(addr)
+                    if(self.stoDict.get(addr)== None):
+                        self.addToStoDict(addr)
                     sto = self.stoDict.get(addr)
                     sto.write(soundData, self.CHUNK)
                     free = self.stout.get_write_available()  # Esto es por si viene audio vacio
@@ -74,7 +74,7 @@ class ControlVoiceStreaming:
 
     def addIpToStream(self,ip):
         self.ipHabilitadas.append(ip)
-        self.addToStoDict(ip)
+        #self.addToStoDict(ip)
 
     def removeIpToStream(self,ip):
         self.ipHabilitadas.remove(ip)
