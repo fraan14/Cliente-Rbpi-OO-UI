@@ -91,7 +91,7 @@ class ControlVoiceStreaming:
 
     def addToStoDict(self,ip):
         sto = self.createSTO()
-        self.stoDict.update({ip,sto})
+        self.stoDict.update({ip:sto})
 
 if __name__ =="__main__":
     app = ControlVoiceStreaming(["172.0.0.3"])
