@@ -9,7 +9,7 @@ class ControlVoiceStreaming:
 
     def __init__(self, ipHabilitadas):
         self.ipHabilitadas = ipHabilitadas
-
+        self.udpCallback = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # lo envio por broadcast
         self.pi = pyaudio.PyAudio()
         #print(self.pi.get_default_input_device_info())
         self.FORMAT = pyaudio.paInt16
@@ -35,7 +35,7 @@ class ControlVoiceStreaming:
         TServer.start()
 
     def FuncionCall(self, in_data, frame_count, time_info, status):
-        self.udpCallback = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # lo envio por broadcast
+        
         if(len(self.ipHabilitadas)>0):
             audio = in_data
             encSoundData = audioop.lin2alaw(audio, 2)
