@@ -10,6 +10,10 @@ class ControlVoiceStreaming:
     def __init__(self, ipHabilitadas):
         self.ipHabilitadas = ipHabilitadas
         self.udpCallback = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # lo envio por broadcast
+        hostname = socket.gethostname() 
+        print(hostname)
+        self.IPAddr = socket.gethostbyname(hostname)
+        print(self.IPAddr)
         self.pi = pyaudio.PyAudio()
         #print(self.pi.get_default_input_device_info())
         self.FORMAT = pyaudio.paInt16
@@ -54,12 +58,13 @@ class ControlVoiceStreaming:
             try:
                 udpData, addr = udp.recvfrom(self.CHUNK)
                 #print(addr)
-                soundData = audioop.alaw2lin(udpData, 2)   #audio a reproducir decodificado
-                self.stout.write(soundData, self.CHUNK)
-                free = self.stout.get_write_available()  # Esto es por si viene audio vacio
-                if free > self.CHUNK:            # Is there a lot of space in the buffer?
-                    tofill = free - self.CHUNK
-                    self.stout.write(silence * tofill)   # Fill it with silence
+                if(self.IPAddr != addr):
+                    soundData = audioop.alaw2lin(udpData, 2)   #audio a reproducir decodificado
+                    self.stout.write(soundData, self.CHUNK)
+                    free = self.stout.get_write_available()  # Esto es por si viene audio vacio
+                    if free > self.CHUNK:            # Is there a lot of space in the buffer?
+                        tofill = free - self.CHUNK
+                        self.stout.write(silence * tofill)   # Fill it with silence
             except Exception :
                traceback.print_exc()
 
