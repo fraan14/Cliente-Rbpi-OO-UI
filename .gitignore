@@ -30,3 +30,4 @@ __pycache__/
 .vscode/
 build/
 dist/
+__pycache__/ControlVoiceStreaming.cpython-36.pyc
