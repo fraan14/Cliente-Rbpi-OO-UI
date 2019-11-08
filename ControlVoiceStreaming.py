@@ -58,7 +58,7 @@ class ControlVoiceStreaming:
         while True:
             try:
                 udpData, addr = udp.recvfrom(self.CHUNK)
-                print("Recibiendo datos de: ",addr)
+                # print("Recibiendo datos de: ",addr)
                 if(self.IPAddr != addr):
                     soundData = audioop.alaw2lin(udpData, 2)   #audio a reproducir decodificado
                     if(self.stoDict.get(addr)== None):
@@ -82,7 +82,8 @@ class ControlVoiceStreaming:
             self.stoDict.pop(ip)
 
     def createSTO(self):
-        stout = self.pi.open(format=self.FORMAT,
+        po = pyaudio.PyAudio()
+        stout = po.open(format=self.FORMAT,
                          channels=self.CHANNELS,
                          rate=self.RATE,
                          output=True,
@@ -94,5 +95,6 @@ class ControlVoiceStreaming:
         self.stoDict.update({ip:sto})
 
 if __name__ =="__main__":
-    app = ControlVoiceStreaming(["172.0.0.3"])
+    app = ControlVoiceStreaming([])
+    app.addIpToStream("172.0.0.2")
     
