@@ -29,11 +29,11 @@ class ControlVoiceStreaming:
                                   stream_callback=self.FuncionCall)
         self.streamInput.start_stream()
 
-        #self.stout = self.pi.open(format=self.FORMAT,
-        #                 channels=self.CHANNELS,
-        #                 rate=self.RATE,
-        #                 output=True,
-        #                 frames_per_buffer=self.CHUNK)
+        self.stout = self.pi.open(format=self.FORMAT,
+                        channels=self.CHANNELS,
+                        rate=self.RATE,
+                        output=True,
+                        frames_per_buffer=self.CHUNK)
 
         #self.udpCallback.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # Para habilitar el Broadcast
         TServer = Thread(name="T-VoiceStream",target=self.VoiceStream)
@@ -96,5 +96,6 @@ class ControlVoiceStreaming:
 
 if __name__ =="__main__":
     app = ControlVoiceStreaming([])
-    app.addIpToStream("172.0.0.2")
+    app.addToStoDict("172.0.0.14")
+    app.addToStoDict("172.0.0.13")
     
