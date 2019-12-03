@@ -18,9 +18,9 @@ class ControlVoiceStreaming:
         self.pi = pyaudio.PyAudio()
         #print(self.pi.get_default_input_device_info())
         self.FORMAT = pyaudio.paInt16
-        self.CHUNK = 2205
+        self.CHUNK = 400
         self.CHANNELS = 1
-        self.RATE = 44100
+        self.RATE = 8000
         self.streamInput = self.pi.open(format=self.FORMAT,
                                   channels=self.CHANNELS,
                                   rate=self.RATE,
@@ -42,25 +42,27 @@ class ControlVoiceStreaming:
     def FuncionCall(self, in_data, frame_count, time_info, status):
         
         if(len(self.ipHabilitadas)>0):
+            
             audio = in_data
             encSoundData = audioop.lin2alaw(audio, 2)
             tosend = bytearray()  # creo el paquete
+            tosend.extend(bytes([0,0,0,0,0,0,0,0]))#para raspy
             tosend.extend(encSoundData)  # le agrego el sonido
            
             for ip in self.ipHabilitadas:
-                self.udpCallback.sendto(tosend, (ip,45000))
+                self.udpCallback.sendto(tosend, (ip,60006))
         return (in_data, pyaudio.paContinue)
 
     def VoiceStream(self):
         udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        udp.bind(('', 45000))
+        udp.bind(('', 60006))
         silence = chr(0) * 2
         while True:
             try:
-                udpData, addr = udp.recvfrom(self.CHUNK)
-                # print("Recibiendo datos de: ",addr)
-                if(self.IPAddr != addr):
-                    soundData = audioop.alaw2lin(udpData, 2)   #audio a reproducir decodificado
+                udpData, addr = udp.recvfrom(self.CHUNK+8)
+                #print("Recibiendo datos de: ",addr)
+                if(self.IPAddr != addr[0]):
+                    soundData = audioop.alaw2lin(udpData[8:], 2)   #audio a reproducir decodificado
                     if(self.stoDict.get(addr)== None):
                         self.addToStoDict(addr)
                     sto = self.stoDict.get(addr)
@@ -95,7 +97,7 @@ class ControlVoiceStreaming:
         self.stoDict.update({ip:sto})
 
 if __name__ =="__main__":
-    app = ControlVoiceStreaming([])
-    app.addToStoDict("172.0.0.14")
-    app.addToStoDict("172.0.0.13")
+    # app = ControlVoiceStreaming(["192.168.3.111"])
+    app = ControlVoiceStreaming(["172.0.0.14"])
+    #app.addToStoDict("172.0.0.14")
     
