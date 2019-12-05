@@ -12,6 +12,7 @@ class ControlServerConnection:
         self.serverSoc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = self.getServerInfo()
         self.colasServerControl = colaSC       # 0 mensajes para envio  / 1 mensajes para recepcion
+        self.keepThreadRunning = True
 
         #Cuando se crea el objeto ya directamente arranca queriendo conectarse, de no ser posible lo informa por las colas de salida
         self.connection = False
@@ -22,7 +23,7 @@ class ControlServerConnection:
             self.makeConnection()                  #una vez que logra conectarse continua
             self.connection = self.checkResponse() #si no es una respuesta aceptable cierra el socket e intenta conectarse nuevamente
         self.serverSoc.settimeout(1)
-        while True:
+        while self.keepThreadRunning:
             #miro si tengo algo para enviar y lo envio de ser necesario
             self.AlertaEnvioMensaje()
             #veo si llego algo y lo pongo en la cola de respuestas 
@@ -54,7 +55,11 @@ class ControlServerConnection:
         if(self.colasServerControl[0].empty() == False):
             try:
                 res = self.colasServerControl[0].get(timeout=1)
-                self.serverSoc.sendall(json.dumps(res).encode())
+
+                if(res == "FIN-EXECUTION"):
+                    self.keepThreadRunning = False
+                else:
+                    self.serverSoc.sendall(json.dumps(res).encode())
             except socket.error:
                 return self.finalizacionSocket()
             except:

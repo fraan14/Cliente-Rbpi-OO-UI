@@ -7,23 +7,26 @@ import json
 import traceback
 
 class Controlc2c:
+    keepThreadRunning = True
     def __init__(self,colaC2C):
         self.intDict = dict()
         self.clientQueue = queue.Queue() #esta cola va a ser la encargada de pasar nuevas conexiones de clientes desde el thread del server
         self.ClienteControlServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ClienteControlServer.bind(("",15000))
+        
         self.colaC2C = colaC2C
-
+       #self.keepThreadRunning = True
         self.toRem = []
 
 
     #Module Work
     def runControlc2c(self):
         self.startServer()
-        while True:
+        while self.keepThreadRunning:
             self.verifyClientQueue()
             self.processIncomingMessages()
             self.processToSendMessages()
+        print("termina o que onda")
 
     def processIncomingMessages(self):
         for key,value in self.intDict.items():
@@ -51,15 +54,19 @@ class Controlc2c:
         while (not self.colaC2C[0].empty()):
             try:
                 msg = self.colaC2C[0].get(timeout=1)
-                ip = msg["TO"]
-                toSend = json.dumps(msg["CONTENIDO"]).encode()
-                if (ip in self.intDict): 
-                    self.intDict[ip].sendall(toSend) #aca tengo que verificar que exista la entrada en el diccionario sino tendria que crear un socket y crear la entrada.
+                if(msg == "FIN-EXECUTION"):
+                    self.keepThreadRunning = False
+                    #self.ClienteControlServer.shutdown(socket.SHUT_RDWR)
                 else:
-                    s = self.crearEntradaConSocket(ip)
-                    self.intDict[ip].sendall(toSend)
-                if(msg["COMANDO"] == 'FIN-COM'):
-                    self.finalRemoveConection(msg["TO"])
+                    ip = msg["TO"]
+                    toSend = json.dumps(msg["CONTENIDO"]).encode()
+                    if (ip in self.intDict): 
+                        self.intDict[ip].sendall(toSend) #aca tengo que verificar que exista la entrada en el diccionario sino tendria que crear un socket y crear la entrada.
+                    else:
+                        s = self.crearEntradaConSocket(ip)
+                        self.intDict[ip].sendall(toSend)
+                    if(msg["COMANDO"] == 'FIN-COM'):
+                        self.finalRemoveConection(msg["TO"])
                 
             except:
                 exc_info = sys.exc_info()
@@ -105,7 +112,7 @@ class Controlc2c:
 
     def serverWork(self,comqueue):
         self.ClienteControlServer.listen()
-        while(True):
+        while(self.keepThreadRunning):
             c, addr = self.ClienteControlServer.accept()
             c.settimeout(1)
             c.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)

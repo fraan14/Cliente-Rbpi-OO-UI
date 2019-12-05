@@ -5,7 +5,7 @@ def generarEnvioMensaje(comando, ipDestino, contenido):
             "CONTENIDO":contenido}
     return toRet
 
-def generarMensajeLogin(nombre,password,destino="SIAG",hassh="224-2"):
+def generarMensajeLogin(nombre,password,destino="ANAU",hassh="224-2"):
     toRet={"COMANDO":"LOGIN",
             "NOMBRE":nombre,
             "PASSWORD":password,
@@ -28,3 +28,11 @@ def generarMensajeSolicitudComRechazada():
 
 def generarMensajeFinCom():
     return {"COMANDO":"FIN-COM"}
+
+def generarPtt(onoff,ip):
+    if(onoff):
+        return {"COMANDO":"PTTON",
+                "IP":ip}
+    else:
+        return {"COMANDO":"PTTOFF",
+                "IP":ip}
