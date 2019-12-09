@@ -34,7 +34,7 @@ class SicosClientCoreWrapper(QtCore.QObject):
         self.core.preInitComunication()            #inicio la comunicacion
 
         self.iniciarLectura = Thread(name="SCWrapper",target=self.checkIncomingMessageQueue)
-        self.iniciarLectura.setDaemon(True)
+        #self.iniciarLectura.setDaemon(True)
         self.iniciarLectura.start()
 
         #dat = FormateadorAJson.generarMensajeLogin("RaspET1","Rasp1")
@@ -42,6 +42,7 @@ class SicosClientCoreWrapper(QtCore.QObject):
         #print(dat)
         #self.enviarMensaje(dat)
 
+    #este metodo lo utiliza la interface para enviar mensajes hacia el servidor
     def enviarMensaje(self,msg):
         self.core.sendMessage(msg)
         #este mensaje debe estar formateado con el json {COMANDO:xxx , TO:xxxx, CONTENIDO:xxx }
@@ -74,16 +75,23 @@ class SicosClientCoreWrapper(QtCore.QObject):
                 self.solicitud_com_rechazada.emit(data["FROM"])
             if(data["COMANDO"] == "FIN-COM"):
                 self.fin_com.emit(data["FROM"])
-            # if(data["COMANDO"] == "FIN-EXECUTION"):
-            #     self.Running = False
+            if(data["COMANDO"] == "FIN-EXECUTION"):
+                self.Running =False
+                
+                
             #     sys.exit()
             #     break
 
     def finishExecution(self):
-        # self.Running = False
-        # self.colaRecepcion.put({"COMANDO":"FIN-EXECUTION"})
-        self.iniciarLectura._stop()
+        self.Running = False
+        self.colaRecepcion.put({"COMANDO":"FIN-EXECUTION"})
+        self.core.sendMessage("FIN-EXECUTION")
+        self.core.stopWorking()
         
+        
+        #self.iniciarLectura._stop()
+        
+            
 
 if __name__ == "__main__":
     rbpiSC = SicosClientCoreWrapper()

@@ -15,6 +15,7 @@ class SicosClientCore:
         
         #Variables de control
         self.logtry = False
+        self.keepRunning = True
         self.envioExterno = queue.Queue()      #para enviar al server
         if( respuestaQueue == None):
             self.recepcionExterna =  queue.Queue()  #para recibir del server
@@ -43,19 +44,18 @@ class SicosClientCore:
 
     def preInitComunication(self):
         self.initThread = Thread(name="SicosClientCore",target=self.initComunication)
-        self.initThread.setDaemon(True)
+        #self.initThread.setDaemon(True)
         self.initThread.start()
 
     def initComunication(self):
-        while True:
-            #self.checkModuloEnvio()
-            if(self.cscThread == None):
+        while self.keepRunning:
+            if(self.cscThread == None and self.keepRunning):
                 self.cscThread = Thread(name="T-ControlServerConnection",target=self.controlsc.runControlServerConnection)
                 self.cscThread.setDaemon(True)
                 self.cscThread.start()
-            if(self.c2cThread == None):
+            if(self.c2cThread == None and self.keepRunning):
                 self.c2cThread = Thread(name="T-Client2Client",target=self.controlC2C.runControlc2c)
-                self.c2cThread.setDaemon(True)
+                #self.c2cThread.setDaemon(True)
                 self.c2cThread.start()
             
             
@@ -89,13 +89,21 @@ class SicosClientCore:
             self.EliminarIpVS(dato["TO"])
             self.procesadorEnvioc2c(dato)
             #self.controlC2C.removeConnectionFinCom(dato["TO"]) NO ELIMINAR, elimina una vez que envio sino cierra el socket
+        elif(dato["COMANDO"] == "PTTON"):
+            self.voicestreaming.pttTalk(True,dato["IP"])
+        elif(dato["COMANDO"] == "PTTOFF"):
+            self.voicestreaming.pttTalk(False,dato["IP"])
+        
     
     #la info tiene que venir en un diccionario.
     def checkModuloEnvio(self):
         while(not self.envioExterno.empty()):
             try:
                 data = self.envioExterno.get(timeout=1)
-                self.ModuloEnvio(data)
+                if(data == "FIN-EXECUTION"):
+                    self.keepThreadRunning = False
+                else:
+                    self.ModuloEnvio(data)
             except:
                 exc_info = sys.exc_info()
                 traceback.print_exception(*exc_info)
@@ -176,14 +184,14 @@ class SicosClientCore:
     
     def procesadorRecepcionCsc(self, res):
         if(res["RESPUESTA"]=="LOGUEO-EXITOSO"):
-            self.procesarDiccionarioUsuarios(res["CONTENIDO"]["USUARIOS"])  #TODO: este debe generar señal de nuevos usuarios
+            self.procesarDiccionarioUsuarios(res["CONTENIDO"]["USUARIOS"])  
         if(res["RESPUESTA"]=="LOGIN-NUEVO-USUARIO"):
-            self.procesarNuevoUsuario(res["CONTENIDO"]["USUARIOS"])         #TODO: este debe generar señal de nuevo usuario
+            self.procesarNuevoUsuario(res["CONTENIDO"]["USUARIOS"])         
         if(res["RESPUESTA"]=="LOGOUT"):
-            self.procesarBajaUsuario(res["CONTENIDO"]["USUARIOS"])          #TODO: este debe generar señal de usuario eliminado
-        if(res["RESPUESTA"]=="LOGIN-RECHAZADO"):                            #TODO: este debe devolver el mensaje entero o una señal correspondiente
+            self.procesarBajaUsuario(res["CONTENIDO"]["USUARIOS"])          
+        if(res["RESPUESTA"]=="LOGIN-RECHAZADO"):                            
             pass
-        if(res["RESPUESTA"]=="LOGIN-EXISTENTE"):                            #TODO: este debe devovler el mensaje entero o una señal correspondiente
+        if(res["RESPUESTA"]=="LOGIN-EXISTENTE"):                           
             pass
         #lo dejamos igual que el de c2c
         toRet = {"COMANDO":res["RESPUESTA"],"FROM":"SERVER","CONTENIDO":res}
@@ -214,6 +222,15 @@ class SicosClientCore:
     
     def sendMessage(self,msg):
         self.envioExterno.put(msg)
+    
+    def stopWorking(self):
+        self.keepRunning = False
+        self.aControlConserver[0].put("FIN-EXECUTION")
+        self.aC2Cliente[0].put("FIN-EXECUTION")
+        self.voicestreaming.stopWorking()
+
+
+
 
 if __name__ == "__main__":
     q1 = queue.Queue()

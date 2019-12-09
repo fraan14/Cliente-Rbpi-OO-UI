@@ -8,7 +8,10 @@ import time
 class ControlVoiceStreaming:
 
     def __init__(self, ipHabilitadas):
+        self.keepThreadRunning = True
         self.ipHabilitadas = ipHabilitadas
+        self.pttOn = False
+        self.ipPtt = ""
         self.stoDict = dict()
         self.udpCallback = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # lo envio por broadcast
         hostname = socket.gethostname() 
@@ -36,28 +39,35 @@ class ControlVoiceStreaming:
                         frames_per_buffer=self.CHUNK)
 
         #self.udpCallback.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # Para habilitar el Broadcast
-        TServer = Thread(name="T-VoiceStream",target=self.VoiceStream)
-        TServer.start()
+        self.TServer = Thread(name="T-VoiceStream",target=self.VoiceStream)
+        self.TServer.start()
 
     def FuncionCall(self, in_data, frame_count, time_info, status):
         
-        if(len(self.ipHabilitadas)>0):
-            
+        if (self.pttOn):
             audio = in_data
             encSoundData = audioop.lin2alaw(audio, 2)
             tosend = bytearray()  # creo el paquete
             tosend.extend(bytes([0,0,0,0,0,0,0,0]))#para raspy
             tosend.extend(encSoundData)  # le agrego el sonido
-           
-            for ip in self.ipHabilitadas:
-                self.udpCallback.sendto(tosend, (ip,60006))
+            self.udpCallback.sendto(tosend, (self.ipPtt, 60006))
+        else:
+            if(len(self.ipHabilitadas)>0):
+                audio = in_data
+                encSoundData = audioop.lin2alaw(audio, 2)
+                tosend = bytearray()  # creo el paquete
+                tosend.extend(bytes([0,0,0,0,0,0,0,0]))#para raspy
+                tosend.extend(encSoundData)  # le agrego el sonido
+            
+                for ip in self.ipHabilitadas:
+                    self.udpCallback.sendto(tosend, (ip,60006))
         return (in_data, pyaudio.paContinue)
 
     def VoiceStream(self):
         udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         udp.bind(('', 60006))
         silence = chr(0) * 2
-        while True:
+        while self.keepThreadRunning:
             try:
                 udpData, addr = udp.recvfrom(self.CHUNK+8)
                 #print("Recibiendo datos de: ",addr)
@@ -95,6 +105,21 @@ class ControlVoiceStreaming:
     def addToStoDict(self,ip):
         sto = self.createSTO()
         self.stoDict.update({ip:sto})
+
+    def pttTalk(self, ptt, ip):
+        if(ptt):
+            self.pttOn = True
+            self.ipPtt = ip
+        else:
+            self.pttOn = False
+            self.ipPtt = ""
+    
+    def stopWorking(self):
+        self.keepThreadRunning = False
+        #self.TServer._stop()
+        self.streamInput.stop_stream()
+
+
 
 if __name__ =="__main__":
     # app = ControlVoiceStreaming(["192.168.3.111"])
