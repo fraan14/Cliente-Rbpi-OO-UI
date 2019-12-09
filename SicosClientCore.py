@@ -184,14 +184,14 @@ class SicosClientCore:
     
     def procesadorRecepcionCsc(self, res):
         if(res["RESPUESTA"]=="LOGUEO-EXITOSO"):
-            self.procesarDiccionarioUsuarios(res["CONTENIDO"]["USUARIOS"])  #TODO: este debe generar señal de nuevos usuarios
+            self.procesarDiccionarioUsuarios(res["CONTENIDO"]["USUARIOS"])  
         if(res["RESPUESTA"]=="LOGIN-NUEVO-USUARIO"):
-            self.procesarNuevoUsuario(res["CONTENIDO"]["USUARIOS"])         #TODO: este debe generar señal de nuevo usuario
+            self.procesarNuevoUsuario(res["CONTENIDO"]["USUARIOS"])         
         if(res["RESPUESTA"]=="LOGOUT"):
-            self.procesarBajaUsuario(res["CONTENIDO"]["USUARIOS"])          #TODO: este debe generar señal de usuario eliminado
-        if(res["RESPUESTA"]=="LOGIN-RECHAZADO"):                            #TODO: este debe devolver el mensaje entero o una señal correspondiente
+            self.procesarBajaUsuario(res["CONTENIDO"]["USUARIOS"])          
+        if(res["RESPUESTA"]=="LOGIN-RECHAZADO"):                            
             pass
-        if(res["RESPUESTA"]=="LOGIN-EXISTENTE"):                            #TODO: este debe devovler el mensaje entero o una señal correspondiente
+        if(res["RESPUESTA"]=="LOGIN-EXISTENTE"):                           
             pass
         #lo dejamos igual que el de c2c
         toRet = {"COMANDO":res["RESPUESTA"],"FROM":"SERVER","CONTENIDO":res}

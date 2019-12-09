@@ -114,8 +114,7 @@ class ControlServerConnection:
             #exc_info = sys.exc_info()
             #traceback.print_exception(*exc_info)
             #self.finalizacionSocket()
-    
-    
+        
     def getUserInfo(self):
         return {'COMANDO':'LOGIN',
                 'NOMBRE':'RaspET2',
