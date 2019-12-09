@@ -126,10 +126,9 @@ class VistaPrincipal(QtWidgets.QMainWindow):
 
     def Evento_PTT_OFF(self,dir_ip):
         print("SIGNAL - PTT_OFF: ", dir_ip)
-        datos = FormateadorAJson.generarMensajeSolicitudComRechazada()
+        datos = FormateadorAJson.generarPtt(False,dir_ip)
         datos = FormateadorAJson.generarEnvioMensaje("PTTOFF",dir_ip,datos)
         self.obj_wrapper_sicos_client_core.enviarMensaje(datos)
-
 
 
 
