@@ -90,9 +90,9 @@ class SicosClientCore:
             self.procesadorEnvioc2c(dato)
             #self.controlC2C.removeConnectionFinCom(dato["TO"]) NO ELIMINAR, elimina una vez que envio sino cierra el socket
         elif(dato["COMANDO"] == "PTTON"):
-            self.voicestreaming.pttTalk(True,dato["IP"])
+            self.voicestreaming.pttTalk(True,dato["CONTENIDO"]["IP"])
         elif(dato["COMANDO"] == "PTTOFF"):
-            self.voicestreaming.pttTalk(False,dato["IP"])
+            self.voicestreaming.pttTalk(False,dato["CONTENIDO"]["IP"])
         
     
     #la info tiene que venir en un diccionario.
