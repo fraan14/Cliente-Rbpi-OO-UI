@@ -148,9 +148,9 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         usuario_destino = dict_usuario['DESTINO']
         usuario_ip = dict_usuario['IP']
         usuario_nombre = dict_usuario['NOMBRE']
-        #usuario_tipo = dict_usuario['TIPOVOIP']
+        usuario_tipo = dict_usuario['TIPOVOIP']
             
-        frame_nuevo = vista_frame_usuario.Frame_Usuario(usuario_nombre,usuario_destino,usuario_ip)
+        frame_nuevo = vista_frame_usuario.Frame_Usuario(usuario_nombre,usuario_destino,usuario_ip,usuario_tipo)
         frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada)   #Atencion de los Eventos generados (Signals) por parte de la clase Frame
         frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada)     #Atencion de los Eventos generados (Signals) por parte de la clase Frame
         frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada)   #Atencion de los Eventos generados (Signals) por parte de la clase Frame
@@ -230,10 +230,13 @@ class VistaPrincipal(QtWidgets.QMainWindow):
             usuario_tipo = usuario['TIPOVOIP']
             
             frame_nuevo = vista_frame_usuario.Frame_Usuario(usuario_nombre,usuario_destino,usuario_ip,usuario_tipo)
-            frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada)
-            frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada)
-            frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada)
-            frame_nuevo.Evento_Rechazar_Llamada.connect(self.Evento_Rechazar_Llamada)
+            frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_Rechazar_Llamada.connect(self.Evento_Rechazar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_PPT_ON.connect(self.Evento_PTT_ON) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_PPT_OFF.connect(self.Evento_PTT_OFF) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+
             self.verticalLayout.insertWidget(0,frame_nuevo)
 
 
@@ -250,10 +253,12 @@ class VistaPrincipal(QtWidgets.QMainWindow):
             #self.Eliminar_Frame_Usuario(dir_ip)
             #Agrego Frame Usuario
             frame_nuevo = vista_frame_usuario.Frame_Usuario(nombre_usuario,destino_usuario,dir_ip,tipo_usuario)
-            frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada)
-            frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada)
-            frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada)
-            frame_nuevo.Evento_Rechazar_Llamada.connect(self.Evento_Rechazar_Llamada)
+            frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_Rechazar_Llamada.connect(self.Evento_Rechazar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_PPT_ON.connect(self.Evento_PTT_ON) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+            frame_nuevo.Evento_PPT_OFF.connect(self.Evento_PTT_OFF) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
             self.verticalLayout.insertWidget(0,frame_nuevo)
             return(frame_nuevo)
         return(None)
