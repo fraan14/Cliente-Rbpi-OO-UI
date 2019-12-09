@@ -217,13 +217,13 @@ class Frame_Usuario(QtWidgets.QFrame):
 
 
     def Atencion_Evento_PTT_ON(self):
-        self.pushButpushButton_img_PTT.setIcon(self.icon_LLAMADA_PTT_ON)
+        self.pushButton_img_PTT.setIcon(self.icon_LLAMADA_PTT_ON)
         QtWidgets.QApplication.processEvents()
         self.Evento_PPT_ON.emit(self.dir_ip)   #Emit SIGNAL
 
 
     def Atencion_Evento_PTT_OFF(self):
-        self.pushButpushButton_img_PTT.setIcon(self.icon_LLAMADA_PTT_OFF)
+        self.pushButton_img_PTT.setIcon(self.icon_LLAMADA_PTT_OFF)
         QtWidgets.QApplication.processEvents()
         self.Evento_PPT_OFF.emit(self.dir_ip)   #Emit SIGNAL
 
