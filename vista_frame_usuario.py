@@ -124,15 +124,14 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.pushButton_img_llamada.setFlat(False)
         self.pushButton_img_llamada.setObjectName("pushButton_1")
         if (self.tipo_usuario == "PTT"):
-            #self.pushButton_img_llamada.setVisible(False)
             self.pushButton_img_llamada.hide()
         else:
-            #self.pushButton_img_llamada.setVisible(True)
             self.pushButton_img_llamada.show()
 
         #Etiqueta IMAGEN PTT
         self.pushButton_img_PTT = QtWidgets.QPushButton(self)
-        self.pushButton_img_PTT.setGeometry(QtCore.QRect(261, 20, 44, 44))
+        #self.pushButton_img_PTT.setGeometry(QtCore.QRect(261, 20, 44, 44))
+        self.pushButton_img_PTT.setGeometry(QtCore.QRect(217, 20, 44, 44))
         self.pushButton_img_PTT.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_img_PTT.setToolTip("")
         self.pushButton_img_PTT.setAutoFillBackground(False)
@@ -146,15 +145,13 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.pushButton_img_PTT.setFlat(False)
         self.pushButton_img_PTT.setObjectName("pushButton_PTT")
         if (self.tipo_usuario == "PTT"):
-            #self.pushButton_img_PTT.setVisible(True)
             self.pushButton_img_PTT.show()
         else:
-            #self.pushButton_img_PTT.setVisible(False)
             self.pushButton_img_PTT.hide()
 
         #Etiqueta IMAGEN LLAMADA CORTE 
         self.pushButton_img_llamada_minicorte = QtWidgets.QPushButton(self)
-        #self.pushButton_img_llamada_minicorte.setEnabled(True)
+        self.pushButton_img_llamada_minicorte.setEnabled(True)
         self.pushButton_img_llamada_minicorte.setGeometry(QtCore.QRect(306, 52, 25, 25))
         self.pushButton_img_llamada_minicorte.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_img_llamada_minicorte.setToolTip("")

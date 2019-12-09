@@ -68,7 +68,7 @@ class VistaPrincipal(QtWidgets.QMainWindow):
     def Evento_Salir_Login(self):
         #self.obj_vista_login.MainWindow.hide()
         self.cerrado_desde_ventana_login = True
-        self.close()
+        self.close() 
 
 
 
