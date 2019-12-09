@@ -12,7 +12,7 @@ class VistaLogin(QtCore.QObject):
         super().__init__()
         self.MainWindow = uic.loadUi("ui\\login_ui.ui")
         self.icon = QtGui.QIcon()
-        self.icon.addPixmap(QtGui.QPixmap("ui\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon.addPixmap(QtGui.QPixmap("ui\\imagenes\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.MainWindow.setWindowIcon(self.icon)
         self.MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.MainWindow.label_mensaje.setText("Formulario de Login...")

@@ -34,7 +34,7 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         
         #self.MainWindow = uic.loadUi("ui\\ppal_ui_1.ui")
         self.icon = QtGui.QIcon()
-        self.icon.addPixmap(QtGui.QPixmap("ui\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon.addPixmap(QtGui.QPixmap("imagenes\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(self.icon)
         
         self.obj_vista_login = vista_login.VistaLogin()
@@ -57,8 +57,9 @@ class VistaPrincipal(QtWidgets.QMainWindow):
             else:
                 event.ignore()
         else:         
-            event.accept()
             self.obj_wrapper_sicos_client_core.finishExecution()
+            event.accept()
+            
 
     #*******************************************************************************
     #SEÑALES emitidas por la ventana de LOGIN 
@@ -109,10 +110,25 @@ class VistaPrincipal(QtWidgets.QMainWindow):
 
 
     def Evento_Rechazar_Llamada(self,dir_ip):
-        print("SIGNAL -RECHAZAR_LLAMADA: ", dir_ip)
+        print("SIGNAL - RECHAZAR_LLAMADA: ", dir_ip)
         datos = FormateadorAJson.generarMensajeSolicitudComRechazada()
         datos = FormateadorAJson.generarEnvioMensaje("SOLICITUD-COM-RECHAZADA",dir_ip,datos)
         self.obj_wrapper_sicos_client_core.enviarMensaje(datos)
+
+
+    def Evento_PTT_ON(self,dir_ip):
+        print("SIGNAL - PTT_ON: ", dir_ip)
+        datos = FormateadorAJson.generarPtt(True,dir_ip)
+        datos = FormateadorAJson.generarEnvioMensaje("PTTON",dir_ip,datos)
+        self.obj_wrapper_sicos_client_core.enviarMensaje(datos)
+
+
+    def Evento_PTT_OFF(self,dir_ip):
+        print("SIGNAL - PTT_OFF: ", dir_ip)
+        datos = FormateadorAJson.generarMensajeSolicitudComRechazada()
+        datos = FormateadorAJson.generarEnvioMensaje("PTTOFF",dir_ip,datos)
+        self.obj_wrapper_sicos_client_core.enviarMensaje(datos)
+
 
 
 
@@ -131,12 +147,15 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         usuario_destino = dict_usuario['DESTINO']
         usuario_ip = dict_usuario['IP']
         usuario_nombre = dict_usuario['NOMBRE']
+        #usuario_tipo = dict_usuario['TIPOVOIP']
             
         frame_nuevo = vista_frame_usuario.Frame_Usuario(usuario_nombre,usuario_destino,usuario_ip)
-        frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada)
-        frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada)
-        frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada)
-        frame_nuevo.Evento_Rechazar_Llamada.connect(self.Evento_Rechazar_Llamada)
+        frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada)   #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+        frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada)     #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+        frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada)   #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+        frame_nuevo.Evento_Rechazar_Llamada.connect(self.Evento_Rechazar_Llamada) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+        frame_nuevo.Evento_PPT_ON.connect(self.Evento_PTT_ON) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
+        frame_nuevo.Evento_PPT_OFF.connect(self.Evento_PTT_OFF) #Atencion de los Eventos generados (Signals) por parte de la clase Frame
         posicion = (self.verticalLayout.count() - 1)
         self.verticalLayout.insertWidget(posicion,frame_nuevo)
 
@@ -207,8 +226,9 @@ class VistaPrincipal(QtWidgets.QMainWindow):
             usuario_destino = usuario['DESTINO']
             usuario_ip = usuario['IP']
             usuario_nombre = usuario['NOMBRE']
+            usuario_tipo = usuario['TIPOVOIP']
             
-            frame_nuevo = vista_frame_usuario.Frame_Usuario(usuario_nombre,usuario_destino,usuario_ip)
+            frame_nuevo = vista_frame_usuario.Frame_Usuario(usuario_nombre,usuario_destino,usuario_ip,usuario_tipo)
             frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada)
             frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada)
             frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada)
@@ -222,12 +242,13 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         if (frame_usuario != None):
             nombre_usuario = frame_usuario.nombre_usuario
             destino_usuario = frame_usuario.destino_usuario
+            tipo_usuario = frame_usuario.tipo_usuario
             #Elimino Frame Usuario
             self.verticalLayout.removeWidget(frame_usuario)
             frame_usuario.deleteLater()
             #self.Eliminar_Frame_Usuario(dir_ip)
             #Agrego Frame Usuario
-            frame_nuevo = vista_frame_usuario.Frame_Usuario(nombre_usuario,destino_usuario,dir_ip)
+            frame_nuevo = vista_frame_usuario.Frame_Usuario(nombre_usuario,destino_usuario,dir_ip,tipo_usuario)
             frame_nuevo.Evento_Aceptar_Llamada.connect(self.Evento_Aceptar_Llamada)
             frame_nuevo.Evento_Cortar_Llamada.connect(self.Evento_Cortar_Llamada)
             frame_nuevo.Evento_Iniciar_Llamada.connect(self.Evento_Iniciar_Llamada)
