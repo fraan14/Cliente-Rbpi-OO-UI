@@ -100,7 +100,11 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.label_img_usuario = QtWidgets.QLabel(self)
         self.label_img_usuario.setGeometry(QtCore.QRect(9, 8, 65, 65))
         self.label_img_usuario.setText("")
-        self.label_img_usuario.setPixmap(QtGui.QPixmap("imagenes\\usuario_persona.png"))  #Modificar para Persona o Pollux o Dispositivo al eq de rf
+        if (self.tipo_usuario == "PTT"):
+            self.label_img_usuario.setPixmap(QtGui.QPixmap("imagenes\\usuario_pc.png"))  #Modificar para Persona o Pollux o Dispositivo al eq de rf
+        else:   
+            self.label_img_usuario.setPixmap(QtGui.QPixmap("imagenes\\usuario_persona.png"))  #Modificar para Persona o Pollux o Dispositivo al eq de rf
+
         self.label_img_usuario.setScaledContents(True)
         self.label_img_usuario.setObjectName("label_12")
        
@@ -144,7 +148,7 @@ class Frame_Usuario(QtWidgets.QFrame):
         if (self.tipo_usuario == "PTT"):
             #self.pushButton_img_PTT.setVisible(True)
             self.pushButton_img_PTT.show()
-         else:
+        else:
             #self.pushButton_img_PTT.setVisible(False)
             self.pushButton_img_PTT.hide()
 
