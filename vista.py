@@ -7,6 +7,7 @@ import vista_frame_usuario
 import vista_login
 import SicosClientCoreWrapper
 import FormateadorAJson
+from  constantes import *
 
 
 class VistaPrincipal(QtWidgets.QMainWindow):
@@ -35,7 +36,7 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         
         #self.MainWindow = uic.loadUi("ui\\ppal_ui_1.ui")
         self.icon = QtGui.QIcon()
-        self.icon.addPixmap(QtGui.QPixmap("imagenes\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon.addPixmap(QtGui.QPixmap(PATH + "\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(self.icon)
         
         self.obj_vista_login = vista_login.VistaLogin()

@@ -38,29 +38,29 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.objThread_llamada = None
         
         self.icon_LLAMADA_REPOSO = QtGui.QIcon()
-        self.icon_LLAMADA_REPOSO.addPixmap(QtGui.QPixmap("imagenes\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_REPOSO.addPixmap(QtGui.QPixmap(PATH + "\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_ENTRANTE_ON = QtGui.QIcon()
-        self.icon_LLAMADA_ENTRANTE_ON.addPixmap(QtGui.QPixmap("imagenes\\llamada_entrante_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_ENTRANTE_ON.addPixmap(QtGui.QPixmap(PATH + "\\llamada_entrante_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.icon_LLAMADA_ENTRANTE_OFF = QtGui.QIcon()
-        self.icon_LLAMADA_ENTRANTE_OFF.addPixmap(QtGui.QPixmap("imagenes\\llamada_entrante_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_ENTRANTE_OFF.addPixmap(QtGui.QPixmap(PATH + "\\llamada_entrante_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_SALIENTE_ON = QtGui.QIcon()
-        self.icon_LLAMADA_SALIENTE_ON.addPixmap(QtGui.QPixmap("imagenes\\llamada_saliente_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_SALIENTE_ON.addPixmap(QtGui.QPixmap(PATH + "\\llamada_saliente_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.icon_LLAMADA_SALIENTE_OFF = QtGui.QIcon()
-        self.icon_LLAMADA_SALIENTE_OFF.addPixmap(QtGui.QPixmap("imagenes\\llamada_saliente_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_SALIENTE_OFF.addPixmap(QtGui.QPixmap(PATH + "\\llamada_saliente_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_CORTE = QtGui.QIcon()
-        self.icon_LLAMADA_CORTE.addPixmap(QtGui.QPixmap("imagenes\\llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_CORTE.addPixmap(QtGui.QPixmap(PATH + "\\llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_MINICORTE = QtGui.QIcon()
-        self.icon_LLAMADA_MINICORTE.addPixmap(QtGui.QPixmap("imagenes\\llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_MINICORTE.addPixmap(QtGui.QPixmap(PATH + "\\llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_PTT_ON = QtGui.QIcon()
-        self.icon_LLAMADA_PTT_ON.addPixmap(QtGui.QPixmap("imagenes\\llamada_ptt_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_PTT_ON.addPixmap(QtGui.QPixmap(PATH + "\\llamada_ptt_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_PTT_OFF = QtGui.QIcon()
-        self.icon_LLAMADA_PTT_OFF.addPixmap(QtGui.QPixmap("imagenes\\llamada_ptt_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_PTT_OFF.addPixmap(QtGui.QPixmap(PATH + "\\llamada_ptt_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.ArmarContenidoFrame()
 
@@ -125,13 +125,10 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.pushButton_img_llamada.setObjectName("pushButton_1")
         if (self.tipo_usuario == "PTT"):
             self.pushButton_img_llamada.hide()
-        else:
-            self.pushButton_img_llamada.show()
 
         #Etiqueta IMAGEN PTT
         self.pushButton_img_PTT = QtWidgets.QPushButton(self)
-        #self.pushButton_img_PTT.setGeometry(QtCore.QRect(261, 20, 44, 44))
-        self.pushButton_img_PTT.setGeometry(QtCore.QRect(217, 20, 44, 44))
+        self.pushButton_img_PTT.setGeometry(QtCore.QRect(261, 20, 44, 44))
         self.pushButton_img_PTT.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_img_PTT.setToolTip("")
         self.pushButton_img_PTT.setAutoFillBackground(False)
@@ -144,14 +141,13 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.pushButton_img_PTT.setDefault(False)
         self.pushButton_img_PTT.setFlat(False)
         self.pushButton_img_PTT.setObjectName("pushButton_PTT")
-        if (self.tipo_usuario == "PTT"):
-            self.pushButton_img_PTT.show()
-        else:
+        if (not (self.tipo_usuario == "PTT")):
             self.pushButton_img_PTT.hide()
+
 
         #Etiqueta IMAGEN LLAMADA CORTE 
         self.pushButton_img_llamada_minicorte = QtWidgets.QPushButton(self)
-        self.pushButton_img_llamada_minicorte.setEnabled(True)
+        #self.pushButton_img_llamada_minicorte.setEnabled(True)
         self.pushButton_img_llamada_minicorte.setGeometry(QtCore.QRect(306, 52, 25, 25))
         self.pushButton_img_llamada_minicorte.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_img_llamada_minicorte.setToolTip("")
@@ -191,14 +187,6 @@ class Frame_Usuario(QtWidgets.QFrame):
             print("Boton LLAMADA (usuario): ", self.nombre_usuario)
             estado_nuevo = CORTE
             self.Procesar_Cambio_Estado(self.estado_llamada,estado_nuevo)
-        # elif (self.estado_llamada == PTT_OFF):
-        #     print("Boton LLAMADA (usuario): ", self.nombre_usuario)
-        #     estado_nuevo = PTT_ON
-        #     self.Procesar_Cambio_Estado(self.estado_llamada,estado_nuevo)
-        # elif (self.estado_llamada == PTT_ON):
-        #     print("Boton LLAMADA (usuario): ", self.nombre_usuario)
-        #     estado_nuevo = PTT_OFF
-        #     self.Procesar_Cambio_Estado(self.estado_llamada,estado_nuevo)
 
             
     def Atencion_Evento_Llamada_Corte(self):
@@ -293,6 +281,7 @@ class Frame_Usuario(QtWidgets.QFrame):
             self.pushButton_img_llamada_minicorte.hide()
             QtWidgets.QApplication.processEvents()
             self.pushButton_img_llamada.setIcon(self.icon_LLAMADA_CORTE)
+            self.pushButton_img_llamada.show()
             QtWidgets.QApplication.processEvents()
             #La logina se encarga de establecer la comunicacion VoIP y comenzar a enviar paquetes
 
@@ -305,27 +294,6 @@ class Frame_Usuario(QtWidgets.QFrame):
             self.pushButton_img_llamada.setIcon(self.icon_LLAMADA_REPOSO)
             QtWidgets.QApplication.processEvents()
             #La logina se encarga de establecer la comunicacion VoIP y comenzar a enviar paquetes
-
-        # elif ((estado_actual == PTT_OFF) and (estado_nuevo == PTT_ON)):
-        #     self.estado_llamada = PTT_ON
-        #     #Cambiar imagen del boton PTT a ppt_on
-        #     #self.pushButton_img_llamada_minicorte.hide()
-        #     #QtWidgets.QApplication.processEvents()
-        #     #self.pushButton_img_llamada.setIcon(self.icon_LLAMADA_REPOSO)
-        #     #QtWidgets.QApplication.processEvents()
-        #     #En el metodo de abajo emit  una nueva señal al wrapper de ptt_on
-        #     # self.Evento_Iniciar_Llamada.emit(self.dir_ip)   #Emit SIGNAL
-
-        # elif ((estado_actual == PTT_ON) and (estado_nuevo == PTT_OFF)):
-        #     self.estado_llamada = PTT_OFF
-        #     #Cambiar imagen del boton PTT a ppt
-        #     #self.pushButton_img_llamada_minicorte.hide()
-        #     #QtWidgets.QApplication.processEvents()
-        #     #self.pushButton_img_llamada.setIcon(self.icon_LLAMADA_REPOSO)
-        #     #QtWidgets.QApplication.processEvents()
-        #     #En el metodo de abajo emit  una nueva señal al wrapper de ptt_off
-        #     # self.Evento_Iniciar_Llamada.emit(self.dir_ip)   #Emit SIGNAL
-
 
 
 

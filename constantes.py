@@ -6,3 +6,4 @@ USUARIO_LOCAL = 4
 USUARIO_REMOTO = 5
 PTT_ON = 6
 PTT_OFF = 7
+PATH = "imagenes"
