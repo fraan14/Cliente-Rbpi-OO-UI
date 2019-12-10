@@ -1,6 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import vista_frame_usuario
+from  constantes import *
 
 class VistaLogin(QtCore.QObject):
 
@@ -10,9 +11,9 @@ class VistaLogin(QtCore.QObject):
 
     def __init__(self):
         super().__init__()
-        self.MainWindow = uic.loadUi("ui\\login_ui.ui")
+        self.MainWindow = uic.loadUi(Get_Path_UI() + "login_ui.ui")
         self.icon = QtGui.QIcon()
-        self.icon.addPixmap(QtGui.QPixmap("ui\\imagenes\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.MainWindow.setWindowIcon(self.icon)
         self.MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.MainWindow.label_mensaje.setText("Formulario de Login...")

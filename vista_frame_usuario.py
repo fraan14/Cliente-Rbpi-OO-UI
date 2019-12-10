@@ -38,29 +38,29 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.objThread_llamada = None
         
         self.icon_LLAMADA_REPOSO = QtGui.QIcon()
-        self.icon_LLAMADA_REPOSO.addPixmap(QtGui.QPixmap(PATH + "\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_REPOSO.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_ENTRANTE_ON = QtGui.QIcon()
-        self.icon_LLAMADA_ENTRANTE_ON.addPixmap(QtGui.QPixmap(PATH + "\\llamada_entrante_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_ENTRANTE_ON.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_entrante_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.icon_LLAMADA_ENTRANTE_OFF = QtGui.QIcon()
-        self.icon_LLAMADA_ENTRANTE_OFF.addPixmap(QtGui.QPixmap(PATH + "\\llamada_entrante_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_ENTRANTE_OFF.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_entrante_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_SALIENTE_ON = QtGui.QIcon()
-        self.icon_LLAMADA_SALIENTE_ON.addPixmap(QtGui.QPixmap(PATH + "\\llamada_saliente_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_SALIENTE_ON.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_saliente_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.icon_LLAMADA_SALIENTE_OFF = QtGui.QIcon()
-        self.icon_LLAMADA_SALIENTE_OFF.addPixmap(QtGui.QPixmap(PATH + "\\llamada_saliente_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_SALIENTE_OFF.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_saliente_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_CORTE = QtGui.QIcon()
-        self.icon_LLAMADA_CORTE.addPixmap(QtGui.QPixmap(PATH + "\\llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_CORTE.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_MINICORTE = QtGui.QIcon()
-        self.icon_LLAMADA_MINICORTE.addPixmap(QtGui.QPixmap(PATH + "\\llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_MINICORTE.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_corte.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_PTT_ON = QtGui.QIcon()
-        self.icon_LLAMADA_PTT_ON.addPixmap(QtGui.QPixmap(PATH + "\\llamada_ptt_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_PTT_ON.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_ptt_on.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.icon_LLAMADA_PTT_OFF = QtGui.QIcon()
-        self.icon_LLAMADA_PTT_OFF.addPixmap(QtGui.QPixmap(PATH + "\\llamada_ptt_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_LLAMADA_PTT_OFF.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_ptt_off.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.ArmarContenidoFrame()
 
@@ -101,9 +101,9 @@ class Frame_Usuario(QtWidgets.QFrame):
         self.label_img_usuario.setGeometry(QtCore.QRect(9, 8, 65, 65))
         self.label_img_usuario.setText("")
         if (self.tipo_usuario == "PTT"):
-            self.label_img_usuario.setPixmap(QtGui.QPixmap("imagenes\\usuario_pc.png"))  #Modificar para Persona o Pollux o Dispositivo al eq de rf
+            self.label_img_usuario.setPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "usuario_pc.png"))  #Modificar para Persona o Pollux o Dispositivo al eq de rf
         else:   
-            self.label_img_usuario.setPixmap(QtGui.QPixmap("imagenes\\usuario_persona.png"))  #Modificar para Persona o Pollux o Dispositivo al eq de rf
+            self.label_img_usuario.setPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "usuario_persona.png"))  #Modificar para Persona o Pollux o Dispositivo al eq de rf
 
         self.label_img_usuario.setScaledContents(True)
         self.label_img_usuario.setObjectName("label_12")

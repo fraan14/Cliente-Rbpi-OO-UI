@@ -15,7 +15,7 @@ class VistaPrincipal(QtWidgets.QMainWindow):
     def __init__(self):
         #QtWidgets.QMainWindow.__init__(self)
         super().__init__()
-        uic.loadUi("ui\\ppal_ui_1.ui", self)        
+        uic.loadUi(Get_Path_UI() + "ppal_ui_1.ui", self)        
         
         self.obj_wrapper_sicos_client_core = SicosClientCoreWrapper.SicosClientCoreWrapper()
         #SIGNAL enviadas por el Wrapper provenientes del Servidor - Tema LOGIN    
@@ -36,7 +36,7 @@ class VistaPrincipal(QtWidgets.QMainWindow):
         
         #self.MainWindow = uic.loadUi("ui\\ppal_ui_1.ui")
         self.icon = QtGui.QIcon()
-        self.icon.addPixmap(QtGui.QPixmap(PATH + "\\llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon.addPixmap(QtGui.QPixmap(Get_Path_Imagenes() + "llamada_reposo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(self.icon)
         
         self.obj_vista_login = vista_login.VistaLogin()
